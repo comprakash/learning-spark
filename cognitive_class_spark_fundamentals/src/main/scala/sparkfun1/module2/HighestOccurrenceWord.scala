@@ -20,6 +20,7 @@ object HighestOccurrenceWord extends App {
 
   val readme = sc.textFile(inputFile)
 
+  // First Method
   val wordCounts: RDD[(String, Int)] = readme.flatMap(line => line.split(" ")).map(word => (word, 1)).reduceByKey((a, b) => a + b)
 
   var highestFreq: Int = 0
@@ -33,4 +34,9 @@ object HighestOccurrenceWord extends App {
   }
 
   println("Highest Occurrence Word = \"" + highestFreqWord + "\" and its frequency = " + highestFreq)
+
+  // Second Method
+  val highestOccurrenceWordFreq: (String, Int) = wordCounts.filter(_._1.nonEmpty).reduce((x, y) => if (y._2 > x._2) y else x)
+
+  println("Highest Occurrence Word and its frequency = " + highestOccurrenceWordFreq)
 }
